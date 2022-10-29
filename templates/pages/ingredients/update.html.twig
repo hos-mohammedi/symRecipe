@@ -1,0 +1,19 @@
+{% extends "base.html.twig" %}
+{% block title %}
+	Ajout d'ingrédients
+{% endblock %}
+{% block body %}
+	<div class="container">
+		<h1>Modification de l'ingredient
+			"{{ ingredient.name }}"
+		</h1>
+		<div class="col-12">
+			{{form_start(formUpdate)}}
+			{{form_row(formUpdate.name)}}
+			{{form_row(formUpdate.price)}}
+			<button type="submit" class="btn btn-primary mt-3">Modifier</button>
+			{{form_end(formUpdate)}}
+		</div>
+	</div>
+
+{% endblock %}

@@ -14,7 +14,7 @@ class AppFixtures extends Fixture
         $faker = Faker\Factory::create('fr_FR');
         for ($i = 0; $i < 50; $i++) {
             $ingredient = (new Ingredient())
-                ->setName($faker->realText())
+                ->setName($faker->word())
                 ->setPrice(rand(1, 200));
             $manager->persist($ingredient);
         }
