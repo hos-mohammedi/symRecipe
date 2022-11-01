@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Ingredient;
 use App\Entity\Recette;
+use App\Entity\Users;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker;
@@ -44,6 +45,23 @@ class AppFixtures extends Fixture
             ;
             $manager->persist($recette);
         }
+
+        //users
+
+        for ($r=0; $r < 10; $r++) { 
+            $user = (new Users())
+                ->setLastname($this->faker->lastName())
+                ->setFirstname($this->faker->firstName())
+                ->setEmail($this->faker->email())
+                ->setRoles(['ROLE_USER'])
+                ->setPlainePassword('secret')
+                ->setPseudo($this->faker->name())
+            ;
+
+            $manager->persist($user);
+
+        }
+
         $manager->flush();
     }
 }
