@@ -23,6 +23,9 @@
 		{% block header %}
 			{% include "partials/_header.html.twig" %}
 		{% endblock %}
+		<div class="container">
+			{% include "partials/_flashes.html.twig" %}
+		</div>
 		{% block body %}{% endblock %}
 	</body>
 </html>

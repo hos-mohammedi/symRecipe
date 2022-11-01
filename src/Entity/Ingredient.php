@@ -2,17 +2,20 @@
 
 namespace App\Entity;
 
-use App\Entity\Traits\TimeStampable;
+use App\Entity\Traits\TimeStampableTrait;
 use App\Repository\IngredientRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: IngredientRepository::class)]
 #[UniqueEntity('name', 'ce nom est déjà utilisé')]
+#[ORM\HasLifecycleCallbacks]
 class Ingredient
 {
-    use TimeStampable;
+    use TimeStampableTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -38,10 +41,14 @@ class Ingredient
     )]
     private ?float $price = null;
 
+    #[ORM\ManyToMany(targetEntity: Recette::class, mappedBy: 'ingredient')]
+    private Collection $recettes;
+
 
     public function __construct()
     {
-        $this->createdAt = new \DateTimeImmutable();
+        $this->createdAt = new \DateTimeImmutable;
+        $this->recettes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -71,5 +78,37 @@ class Ingredient
         $this->price = $price;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Recette>
+     */
+    public function getRecettes(): Collection
+    {
+        return $this->recettes;
+    }
+
+    public function addRecette(Recette $recette): self
+    {
+        if (!$this->recettes->contains($recette)) {
+            $this->recettes->add($recette);
+            $recette->addIngredient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRecette(Recette $recette): self
+    {
+        if ($this->recettes->removeElement($recette)) {
+            $recette->removeIngredient($this);
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 }

@@ -6,11 +6,6 @@
 
 {% block body %}
 	<div class="container">
-		{% for message in app.flashes('success') %}
-			<div class="alert alert-success mt-3">
-				{{message	}}
-			</div>
-		{% endfor %}
 		<a href=" {{ path('app_ingredients_new') }} " class="btn btn-secondary mt-4">Ajouter ingrédient</a>
 		<div class="count mt-4">
 			{% if ingredients.getTotalItemCount > 0 %}
@@ -30,6 +25,7 @@
 					</th>
 					<th scope="col">Prix</th>
 					<th scope="col">Date de création</th>
+					<th scope="col">Date de modification</th>
 					<th scope="col" class="text-center">Actions</th>
 				</tr>
 			</thead>
@@ -41,9 +37,12 @@
 						</th>
 						<td>{{ ingredient.name }}</td>
 						<td>{{ ingredient.price }}</td>
-						<td>{{ ingredient.createdAt|date('Y m d') }}</td>
-						<td><a href=" {{ path('app_ingredients_update', {id: ingredient.id}) }} " class="btn btn-warning">Modifier</a></td>
-						<td><a href=" {{ path('app_ingredient_delete', {id: ingredient.id}) }} " class="btn btn-danger" onclick="return confirm('étes vous sur de supprimer  {{ ingredient.name }} ?')" >supprimer</a></td>
+						<td>{{ ingredient.createdAt|date('F jS \\a\\t H:i:s') }}</td>
+						<td>{{ ingredient.updatedAt|date('F jS \\a\\t H:i:s') }}</td>
+						<td class="text-center">
+							<a href=" {{ path('app_ingredients_update', {id: ingredient.id}) }} " class="btn btn-warning">Modifier</a>
+							<a href=" {{ path('app_ingredient_delete', {id: ingredient.id}) }} " class="btn btn-danger" onclick="return confirm('étes vous sur de supprimer  {{ ingredient.name }} ?')">supprimer</a>
+						</td>
 					</tr>
 				{% endfor %}
 			</tbody>

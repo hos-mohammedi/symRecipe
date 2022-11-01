@@ -1,0 +1,19 @@
+{% extends "base.html.twig" %}
+{% block title %}Modifier la recette - {{ recette.name }}
+{% endblock %}
+{% block body %}
+	<div class="container">
+    <h1 class="mb-3"> Modifier une recette</h1>
+		{{form_start(form)}}
+		{{ form_row(form.name) }}
+		{{ form_row(form.time) }}
+		{{ form_row(form.nbrPersonnes) }}
+		{{ form_row(form.difficulty) }}
+		{{ form_row(form.description) }}
+		{{ form_row(form.price) }}
+		{{ form_row(form.isFavorite) 	}}
+		{{ form_row(form.ingredient) }}
+		{{ form_widget(form.submit, { 'label': 'Modifier' })}}
+		{{form_end(form)}}
+	</div>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recettes -
+	{{ parent() }}
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<div>
+			<a href=" {{ path('recettes.add') }} " class="btn btn-secondary my-3">Ajouter</a>
+		</div>
+		{% if recettes.getTotalItemCount > 0 %}
+			Il ya
+		 <strong>{{ recettes.getTotalItemCount }}</strong>	
+			ingrédients au total
+		{% else %}
+			Il n'y a pas d'ingredients pour le moment
+		{% endif %}
+		<div class="row">
+			<div class="col-12">
+				<table class="table table-hover">
+					<thead>
+						<tr>
+							<th scope="col">Id</th>
+							<th scope="col">Titre</th>
+							<th scope="col">Temps</th>
+							<th scope="col">Nbr de personnes</th>
+							<th scope="col">difficulte</th>
+							<th scope="col">Prix</th>
+							<th scope="col">Favorite</th>
+							<th scope="col">Ingredients</th>
+							<th scope="col">Date de Création</th>
+							<th scope="col">Date de modification</th>
+							<th scope="col" class="text-center" colspane="2">Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for recette in recettes %}
+							<tr class="table-primary">
+								<th scope="row">
+									{{ recette.id }}
+								</th>
+								<td scope="row">
+									{{ recette.name }}
+								</td>
+								<td scope="row">
+									{{ recette.time }}
+								</td>
+								<td scope="row">
+									{{ recette.nbrPersonnes }}
+								</td>
+								<td scope="row">
+									{{ recette.difficulty }}
+								</td>
+								<td scope="row">
+									{{ (recette.price == null ) ? 'Non renseigné' : recette.price }}
+								</td>
+								<td scope="row">
+									{{ (recette.isFavorite == true ) ? 'Oui' : 'Non' }}
+								</td>
+								<td scope="row">
+									<select name="" id="">
+										{% for ingredient in recette.getIngredient %}
+											<option value="">
+												{{ ingredient.name }}
+											</option>
+										{% endfor %}
+									</select>
+								</td>
+								<td scope="row">
+									{{ recette.createdAt|date("F jS \\a\\t H:i:s") }}
+								</td>
+								<td scope="row">
+									{{ recette.updatedAt|date("F jS \\a\\t H:i:s") }}
+								</td>
+								<td class="w-25 text-center">
+									<a href=" {{ path('recettes.edit', {id: recette.id}) }} " class="btn btn-info ">Modifier</a>
+									<a href=" {{ path('recettes.delete', {id: recette.id}) }} " class="btn btn-danger " onclick="return confirm('etes vous sur de vouloir supprimer {{ recette.name }} ?')">Supprimer</a>
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="navigation">
+			{{ knp_pagination_render(recettes) }}
+		</div>
+	</div>
+{% endblock %}
